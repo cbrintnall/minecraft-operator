@@ -5,7 +5,7 @@ WORKDIR /app
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
-COPY src /app
+COPY src/*.py /app
 
 CMD [ "kopf", "run", "--standalone", "/app/main.py" ]
 

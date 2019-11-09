@@ -8,6 +8,10 @@ def create_server(body, spec, **kwargs):
 
     return {message: "Ok"}
 
+@kopf.on.create("arc.com", "v1alpha1", "proxies")
+def create_proxy(body, spec, **kwargs):
+    pass
+
 def create_server_body():
     return {}
 
