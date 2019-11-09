@@ -2,7 +2,7 @@ import kopf
 import yaml
 import kubernetes
 
-@kopf.on.create("arc.com", "v1alpha1", "server")
+@kopf.on.create("arc.com", "v1alpha1", "servers")
 def create_server(body, spec, **kwargs):
     raise kopf.HandlerFatalError(f"The body looks like {body}")
 

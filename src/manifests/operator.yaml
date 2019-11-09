@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server-operator
+spec:
+  selector:
+    matchLabels:
+      app: server-operator
+  template:
+    metadata:
+      labels:
+        app: server-operator
+    spec:
+      serviceAccountName: server-operator
+      containers:
+        - image: quay.io/cbrintnall/minigame:latest
+          name: operator
