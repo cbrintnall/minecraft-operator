@@ -1,0 +1,16 @@
+name: Docker Image CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag quay.io/cbrintnall/server-operator:$(date +%s)
+    - name: Build Bungee Cord image
+      run: docker build . --file src/dockerfiles/bungeecord.dockerfile --tag quay.io/cbrintnall/bungee-cord:$(date +%s)
+    - name: Build Spigot Image
+      run: docker build . --file src/dockerfiles/spigot.dockerfile --tag quay.io/cbrintnall/spigot:$(date +%s)
