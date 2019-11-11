@@ -1,0 +1,6 @@
+# /bin/sh
+
+NAME=quay.io/cbrintnall/minigame
+
+docker build . -t ${NAME}
+docker push ${NAME}

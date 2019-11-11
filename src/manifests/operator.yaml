@@ -13,6 +13,6 @@ spec:
     spec:
       serviceAccountName: server-operator
       containers:
-        - image: quay.io/cbrintnall/minigame:latest
+        - image: quay.io/cbrintnall/minigame
           name: operator
           imagePullPolicy: Always

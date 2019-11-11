@@ -6,3 +6,7 @@ build:
     context: .
     docker:
       dockerfile: Dockerfile
+deploy:
+  kubectl:
+    manifests:
+      - src/manifests/*.yaml
