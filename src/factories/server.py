@@ -1,3 +1,5 @@
+import uuid
+
 BUNGEE_IMAGE = ""
 SPIGOT_IMAGE = "quay.io/cbrintnall/spigot"
 
@@ -7,7 +9,10 @@ def create_server_body(name: str) -> dict:
         "kind": "Pod",
         "metadata": {
             "type": "server",
-            "name": name
+            "name": f"{name}-owned-{str(uuid.uuid4())[:5]}",
+            "labels": {
+                "owner": name
+            }
         },
         "spec": {
             "containers": [
@@ -20,5 +25,24 @@ def create_server_body(name: str) -> dict:
         }
     }
 
-def create_server_nodeport():
-    return {}
+def create_server_nodeport(name: str) -> dict:
+    return {
+        "apiVersion": "v1",
+        "kind": "Service",
+        "metadata": {
+            "name": name
+        },
+        "spec": {
+            "selector": {
+                "owner": name
+            },
+            "type": "NodePort",
+            "ports": [
+                {
+                    "protocol": "TCP",
+                    "port": 25565,
+                    "targetPort": 25565
+                }
+            ]
+        }
+    }
