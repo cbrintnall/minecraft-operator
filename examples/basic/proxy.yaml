@@ -1,0 +1,4 @@
+apiVersion: arc.com/v1alpha1
+kind: Proxy
+metadata:
+  name: proxy-1

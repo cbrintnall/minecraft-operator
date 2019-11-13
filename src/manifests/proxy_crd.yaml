@@ -17,3 +17,4 @@ spec:
     shortNames:
      - prox
      - pr
+   preserveUnknownFields: false

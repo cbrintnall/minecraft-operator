@@ -1,0 +1,10 @@
+#! /bin/sh
+
+
+SPIGOT=quay.io/cbrintnall/spigot
+BUNGEE=quay.io/cbrintnall/bungeecord
+
+docker build -f src/dockerfiles/spigot.dockerfile . -t ${SPIGOT}
+docker build -f src/dockerfiles/bungee.dockerfile . -t ${BUNGEE}
+docker push ${SPIGOT}
+docker push ${BUNGEE}

@@ -26,3 +26,5 @@
            properties:
             open:
               type: boolean
+            proxyName:
+              type: string

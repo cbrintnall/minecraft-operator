@@ -30,9 +30,21 @@ def create_server(meta, spec, logger, namespace, **kwargs):
     else:
         logger.info(f"Service {name} already exists")
 
+    if proxy_name := body.get('proxyName'):
+        if proxy := get_pod(proxy_name, namespace):
+            logger.info("Proxy: " + proxy.name)
+
     # Adopt the sub-objects for cascaded deletion
-    kopf.adopt(to_own)
+    kopf.adopt(to_own, owner=name)
     return {"message": "Ok"}
+
+def get_pod(name: str, namespace: str):
+    try:
+        return corev1.read_namespaced_pod(name=name, namespace=namespace)
+    except ApiException as e:
+        pass
+
+    return None
 
 # TODO: This doesn't work, make it by label
 def pod_exists(name: str, namespace: str) -> bool:
@@ -53,8 +65,8 @@ def service_exists(name: str, namespace: str) -> bool:
 
     return False
 
-@kopf.on.create("arc.com", "v1alpha1", "proxies")
-def create_proxy(meta, logger, namespace, **kwargs):
+@kopf.on.delete("arc.com", "v1alpha1", "servers")
+def delete_server(meta, logger, namespace, **kwargs):
     name = meta.get('name')
     delete_options = client.V1DeleteOptions()
 
@@ -65,3 +77,19 @@ def create_proxy(meta, logger, namespace, **kwargs):
         logger.info(f"Pod {name} doesn't exist.")
 
     return {"message": "Ok"}
+
+@kopf.on.create("arc.com", "v1alpha1", "proxies")
+def create_proxy(meta, body, logger, namespace, **kwargs):
+    to_own = []
+    name = meta.get('name')
+    spec = proxy.create_proxy_body(name)
+
+    if not pod_exists(name, namespace):
+        obj = corev1.create_namespaced_pod(namespace=namespace, body=spec)
+        logger.info(f"Successfully created proxy {name}")
+        to_own.append(obj)
+    else:
+        logger.info(f"Pod {name} already exists")
+
+    kopf.adopt(to_own, owner=name)
+    return { "message": "Ok" }

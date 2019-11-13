@@ -1,6 +1,5 @@
 import uuid
 
-BUNGEE_IMAGE = ""
 SPIGOT_IMAGE = "quay.io/cbrintnall/spigot"
 
 def create_server_body(name: str) -> dict:
@@ -9,7 +8,7 @@ def create_server_body(name: str) -> dict:
         "kind": "Pod",
         "metadata": {
             "type": "server",
-            "name": f"{name}-owned-{str(uuid.uuid4())[:5]}",
+            "name": f"{name}",
             "labels": {
                 "owner": name
             }
